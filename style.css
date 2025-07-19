@@ -1,0 +1,133 @@
+:root {
+  --bg: #1e1e1e;
+  --panel: #252526;
+  --input-bg: #3c3c3c;
+  --text: #d4d4d4;
+  --border: #3c3c3c;
+  --accent: #0e639c;
+  --highlight: #007acc;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+}
+
+.container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--highlight);
+  font-size: 1.3rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  background-color: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.1);
+}
+
+button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 15px;
+  width: 100%;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--highlight);
+}
+
+.resultado {
+  white-space: pre-wrap;
+  background-color: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 15px;
+  margin-top: 20px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  border-radius: 4px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.resultado-panel {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultado-seccion {
+  padding: 10px 15px;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.resultado-seccion h3 {
+  margin-top: 0;
+  color: var(--highlight);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.resultado-linea {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  font-size: 0.93rem;
+}
+
+.resultado-linea span:last-child {
+  font-weight: bold;
+}
+
+.conclusion {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px;
+  border-left: 4px solid var(--highlight);
+  background-color: #007acc22;
+  border-radius: 4px;
+}

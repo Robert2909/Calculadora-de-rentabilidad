@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora de Ganancias</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🧮 Calculadora de Ganancias</h1>
+    <form id="formulario">
+      <label>🛍️ Nombre del producto:
+        <input type="text" id="nombre" value="Aspiradora inteligente" required>
+      </label>
+      <label>💰 Precio de venta ($):
+        <input type="number" id="precio" value="199" required>
+      </label>
+      <label>📦 Costo proveedor ($):
+        <input type="number" id="proveedor" value="85" required>
+      </label>
+      <label>📉 Comisión TikTok (%):
+        <input type="number" id="tiktok" value="6" required>
+      </label>
+      <label>🤝 Comisión Afiliado (%):
+        <input type="number" id="afiliado" value="3" required>
+      </label>
+      <label>🚚 Costo de envío ($):
+        <input type="number" id="envio" value="20" required>
+      </label>
+      <label>📬 Embalaje ($):
+        <input type="number" id="embalaje" value="10" required>
+      </label>
+      <label>
+        <input type="checkbox" id="incluirAlmacenaje"> ¿Incluir almacenaje en Shipster?
+      </label>
+      <div id="grupo-almacenaje" style="display: none;">
+        <label>🏢 Almacenaje ($):
+          <input type="number" id="almacenaje" value="8">
+        </label>
+      </div>
+      <button type="submit">📊 Calcular Ganancia</button>
+    </form>
+    <div id="resultado" class="resultado-panel" style="display: none;"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
