@@ -1,48 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculadora de rentabilidad</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🧮 Calculadora de rentabilidad</h1>
-    <form id="formulario">
-      <label>🛍️ Nombre del producto:
-        <input type="text" id="nombre" value="Aspiradora inteligente" required>
-      </label>
-      <label>💰 Precio de venta ($):
-        <input type="number" id="precio" value="199" required>
-      </label>
-      <label>📦 Costo proveedor ($):
-        <input type="number" id="proveedor" value="99" required>
-      </label>
-      <label>📉 Comisión TikTok (%):
-        <input type="number" id="tiktok" value="6" required>
-      </label>
-      <label>🤝 Comisión Afiliado (%):
-        <input type="number" id="afiliado" value="10" required>
-      </label>
-      <label>🚚 Costo de envío ($):
-        <input type="number" id="envio" value="59" required>
-      </label>
-      <label>📬 Embalaje ($):
-        <input type="number" id="embalaje" value="10" required>
-      </label>
-      <label>
-        <input type="checkbox" id="incluirAlmacenaje"> ¿Incluir almacenaje en Shipster?
-      </label>
-      <div id="grupo-almacenaje" style="display: none;">
-        <label>🏢 Almacenaje ($):
-          <input type="number" id="almacenaje" value="10">
-        </label>
-      </div>
-      <button type="submit">📊 Calcular Ganancia</button>
-    </form>
+  <div class="layout">
+    <!-- Columna izquierda: Formulario -->
+    <div class="formulario-panel">
+      <h1 class="titulo">Calculadora de Rentabilidad</h1>
+      <form id="formulario" class="formulario">
+        <div class="campo">
+          <label for="nombre">Nombre del producto</label>
+          <input type="text" id="nombre" value="Audífonos inalámbricos" required />
+        </div>
+
+        <div class="campos-dobles">
+          <div class="campo">
+            <label for="precio">Precio de venta ($)</label>
+            <input type="number" id="precio" value="199" required />
+          </div>
+          <div class="campo">
+            <label for="proveedor">Costo proveedor ($)</label>
+            <input type="number" id="proveedor" value="59" required />
+          </div>
+          <div class="campo">
+            <label for="tiktok">Comisión TikTok (%)</label>
+            <input type="number" id="tiktok" value="6" required />
+          </div>
+          <div class="campo">
+            <label for="afiliado">Comisión Afiliado (%)</label>
+            <input type="number" id="afiliado" value="10" required />
+          </div>
+          <div class="campo">
+            <label for="envio">Costo de envío ($)</label>
+            <input type="number" id="envio" value="59" required />
+          </div>
+          <div class="campo">
+            <label for="embalaje">Embalaje ($)</label>
+            <input type="number" id="embalaje" value="10" required />
+          </div>
+        </div>
+
+        <div class="campo-check">
+          <input type="checkbox" id="incluirAlmacenaje" />
+          <label for="incluirAlmacenaje">¿Incluir almacenaje en Shipster?</label>
+        </div>
+
+        <div id="grupo-almacenaje" class="campo">
+          <label for="almacenaje">Almacenaje ($)</label>
+          <input type="number" id="almacenaje" value="10" />
+        </div>
+      </form>
+    </div>
+
+    <!-- Columna derecha: Resultados -->
     <div id="resultado" class="resultado-panel" style="display: none;"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
