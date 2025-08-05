@@ -38,7 +38,7 @@ function calcularGanancia() {
     resultadoHTML.innerHTML += `
       <div class="resultado-seccion">
         <h3>Resumen de Producto: ${nombre}</h3>
-        ${linea("Precio de venta:", `+$${precio.toFixed(2)}`)}
+        ${linea("Precio de venta:", `$${precio.toFixed(2)}`)}
       </div>`;
 
     let bloqueCostos = `
@@ -83,7 +83,7 @@ function calcularGanancia() {
 
     resultadoHTML.innerHTML += `
       <div class="resultado-seccion">
-        <h3>Conclusión</h3>
+        <h3>Resultado</h3>
         <div class="conclusion">${conclusionTexto}</div>
       </div>`;
 
