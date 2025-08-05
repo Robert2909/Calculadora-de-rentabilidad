@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de rentabilidad</title>
+  <title>Calculadora de Rentabilidad</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="layout">
-    <!-- Columna izquierda: Formulario -->
-    <div class="formulario-panel">
+  <main class="layout">
+    <!-- Panel: Formulario -->
+    <section class="formulario-panel">
       <h1 class="titulo">Calculadora de Rentabilidad</h1>
       <form id="formulario" class="formulario">
         <div class="campo">
@@ -54,12 +54,76 @@
           <input type="number" id="almacenaje" value="10" />
         </div>
       </form>
-    </div>
+      <div class="resultado-exportar">
+        <button id="btnExportar" class="boton-exportar">Exportar resultados</button>
+      </div>
+    </section>
 
-    <!-- Columna derecha: Resultados -->
-    <div id="resultado" class="resultado-panel" style="display: none;"></div>
-  </div>
+    <!-- Panel: Resultados -->
+    <section id="resultado" class="resultado-panel" style="display: none;">
+      <div class="resultado-titulo" id="tituloProductoVisual"></div>
+      <!-- Resumen -->
+      <div class="resultado-resumen">
+        <div class="bloque-resumen">
+          <div class="resumen-label">Ganancia Neta</div>
+          <div class="resumen-valor" id="gananciaNetaResumen">$0.00</div>
+          <div class="resumen-barra">
+            <div class="barra" id="barraGanancia"></div>
+          </div>
+        </div>
+        <div class="bloque-resumen">
+          <div class="resumen-label">Margen de Ganancia</div>
+          <div class="resumen-valor" id="margenResumen">0.00%</div>
+          <div class="resumen-barra">
+            <div class="barra" id="barraMargen"></div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Desglose -->
+      <div class="resultado-seccion">
+        <h3>Desglose Detallado</h3>
+        <div class="resultado-linea"><span>Precio de Venta</span><span id="precioVenta"></span></div>
+        <div class="resultado-linea"><span>Costo del Proveedor</span><span id="costoProveedor"></span></div>
+        <div class="resultado-linea"><span>Comisión de TikTok</span><span id="comisionTikTok"></span></div>
+        <div class="resultado-linea"><span>Comisión de Afiliado</span><span id="comisionAfiliado"></span></div>
+        <div class="resultado-linea"><span>Costo de Envío</span><span id="costoEnvio"></span></div>
+        <div class="resultado-linea"><span>Embalaje</span><span id="costoEmbalaje"></span></div>
+        <div class="resultado-linea"><span>Almacenaje Shipster</span><span id="costoAlmacenaje"></span></div>
+        <div class="resultado-linea total-linea"><span>Total Gastos</span><span id="totalGastos"></span></div>
+      </div>
+
+      <!-- Métricas -->
+      <div class="resultado-seccion resultado-metricas">
+        <h3>Métricas Clave</h3>
+        <div class="metricas-grid">
+          <div class="bloque-metrica">
+            <div class="metrica-label">ROI</div>
+            <div class="metrica-valor" id="roi"></div>
+            <div class="metrica-desc">Retorno de Inversión</div>
+          </div>
+          <div class="bloque-metrica">
+            <div class="metrica-label">Punto de Equilibrio</div>
+            <div class="metrica-valor" id="equilibrio"></div>
+            <div class="metrica-desc">Unidades para cubrir costos</div>
+          </div>
+          <div class="bloque-metrica">
+            <div class="metrica-label">Ganancia por Unidad</div>
+            <div class="metrica-valor" id="gananciaUnidad"></div>
+            <div class="metrica-desc">Beneficio por producto</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conclusión -->
+      <div class="resultado-seccion conclusion" id="bloque-conclusion">
+        <h3>Resultado</h3>
+        <div class="conclusion-texto" id="textoConclusion"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

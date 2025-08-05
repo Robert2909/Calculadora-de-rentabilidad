@@ -25,67 +25,46 @@ function calcularGanancia() {
     const roi = costo_inversion ? (ganancia / costo_inversion) * 100 : 0;
     const equilibrio = precio ? total_gastos / precio : 0;
 
+    // Mostrar contenedor de resultados
     const resultadoHTML = document.getElementById("resultado");
-    resultadoHTML.innerHTML = "";
     resultadoHTML.style.display = "block";
 
-    const linea = (etiqueta, valor) => `
-      <div class="resultado-linea">
-        <span>${etiqueta}</span>
-        <span>${valor}</span>
-      </div>`;
+    document.getElementById("tituloProductoVisual").innerText = nombre;
 
-    resultadoHTML.innerHTML += `
-      <div class="resultado-seccion">
-        <h3>Resumen de Producto: ${nombre}</h3>
-        ${linea("Precio de venta:", `$${precio.toFixed(2)}`)}
-      </div>`;
+    // Actualizar resumen superior
+    const resumen = document.querySelector(".resultado-resumen");
 
-    let bloqueCostos = `
-      ${linea("Costo proveedor:", `-$${proveedor.toFixed(2)}`)}
-      ${linea(`Comisión TikTok (${tiktok_pct}%):`, `-$${com_tiktok.toFixed(2)}`)}
-      ${linea(`Comisión afiliado (${afiliado_pct}%):`, `-$${com_afiliado.toFixed(2)}`)}
-      ${linea("Envío:", `-$${envio.toFixed(2)}`)}
-      ${linea("Embalaje:", `-$${embalaje.toFixed(2)}`)}
-      ${linea("Almacenaje Shipster:", `-$${almacenaje.toFixed(2)}`)}
-      ${linea("Total gastos:", `-$${total_gastos.toFixed(2)}`)}
-    `;
+    document.getElementById("gananciaNetaResumen").innerText = `$${ganancia.toFixed(2)}`;
+    document.getElementById("margenResumen").innerText = `${margen.toFixed(2)}%`;
+    document.getElementById("barraGanancia").style.width = `${Math.min(100, (ganancia / precio) * 100)}%`;
+    document.getElementById("barraMargen").style.width = `${Math.min(100, margen)}%`;
 
-    resultadoHTML.innerHTML += `
-      <div class="resultado-seccion">
-        <h3>Costos Totales</h3>
-        ${bloqueCostos}
-      </div>`;
+    // Actualizar desglose
+    document.getElementById("precioVenta").innerText = `+$${precio.toFixed(2)}`;
+    document.getElementById("costoProveedor").innerText = `-$${proveedor.toFixed(2)}`;
+    document.getElementById("comisionTikTok").innerText = `-$${com_tiktok.toFixed(2)}`;
+    document.getElementById("comisionAfiliado").innerText = `-$${com_afiliado.toFixed(2)}`;
+    document.getElementById("costoEnvio").innerText = `-$${envio.toFixed(2)}`;
+    document.getElementById("costoEmbalaje").innerText = `-$${embalaje.toFixed(2)}`;
+    document.getElementById("costoAlmacenaje").innerText = `-$${almacenaje.toFixed(2)}`;
+    document.getElementById("totalGastos").innerText = `-$${total_gastos.toFixed(2)}`;
 
-    resultadoHTML.innerHTML += `
-      <div class="resultado-seccion">
-        <h3>Ganancias</h3>
-        ${linea("Ganancia neta:", `$${ganancia.toFixed(2)}`)}
-        ${linea("Margen de ganancia:", `${margen.toFixed(2)}%`)}
-      </div>`;
+    // Actualizar métricas
+    document.getElementById("roi").innerText = `${roi.toFixed(2)}%`;
+    document.getElementById("equilibrio").innerText = `${equilibrio.toFixed(2)} unidades`;
+    document.getElementById("gananciaUnidad").innerText = `$${ganancia.toFixed(2)}`;
 
-    resultadoHTML.innerHTML += `
-      <div class="resultado-seccion">
-        <h3>Métricas adicionales</h3>
-        ${linea("ROI:", `${roi.toFixed(2)}%`)}
-        ${linea("Unidades para cubrir costos:", `${equilibrio.toFixed(2)}`)}
-        ${linea("Ganancia por unidad:", `$${ganancia.toFixed(2)}`)}
-      </div>`;
-
+    // Conclusión
     let conclusionTexto = "";
-    if (margen > 20) {
+    if (margen > 25) {
       conclusionTexto = "✅ Buen margen.";
-    } else if (margen >= 10) {
-      conclusionTexto = "⚠️ Margen aceptable.";
+    } else if (margen >= 15) {
+      conclusionTexto = "⚠️ Margen regular.";
     } else {
-      conclusionTexto = "❌ Margen bajo.";
+      conclusionTexto = "❌ Mal margen.";
     }
 
-    resultadoHTML.innerHTML += `
-      <div class="resultado-seccion">
-        <h3>Resultado</h3>
-        <div class="conclusion">${conclusionTexto}</div>
-      </div>`;
+    document.getElementById("textoConclusion").innerText = conclusionTexto;
 
   } catch (err) {
     alert("Error en los datos ingresados. Verifica los campos numéricos.\n" + err.message);
@@ -100,3 +79,24 @@ document.querySelectorAll("input").forEach(input => {
 
 // Ejecutar una vez al cargar
 calcularGanancia();
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("btnExportar").addEventListener("click", function () {
+    const resultado = document.getElementById("resultado");
+    const nombreProducto = document.getElementById("nombre").value.trim().replace(/\s+/g, "_");
+    const fecha = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+    html2canvas(resultado, {
+      backgroundColor: null,
+      useCORS: true,
+      scale: 2
+    }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = `Rentabilidad_${nombreProducto}_${fecha}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch(err => {
+      alert("Ocurrió un error al exportar la imagen. Intenta nuevamente.\n" + err.message);
+    });
+  });
+});
