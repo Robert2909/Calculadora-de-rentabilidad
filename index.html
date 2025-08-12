@@ -3,127 +3,343 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Rentabilidad</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Calculadora de Rentabilidad — VS Code Theme</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Visual Studio Code‑like Dark Theme ===== */
+    :root{
+      --bg:#1e1e1e;          /* workbench.background */
+      --panel:#252526;        /* editorGroupHeader.tabsBackground */
+      --panel-2:#1f1f1f;      /* sideBar.background */
+      --text:#d4d4d4;         /* editor.foreground */
+      --muted:#9da1a6;        /* descriptionForeground */
+      --border:#2d2d2d;       /* contrastBorder-ish */
+      --accent:#007acc;       /* list.activeSelectionForeground (VS Code blue) */
+      --ring:rgba(0,122,204,.35);
+      --green:#89d185;        /* success */
+      --yellow:#dcdcaa;       /* warning */
+      --red:#f14c4c;          /* error */
+      --radius:14px;
+      --shadow:0 10px 28px rgba(0,0,0,.45);
+      --shadow-soft:0 8px 22px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
+
+    .wrap{max-width:1120px; margin:28px auto 80px; padding:0 16px}
+
+    /* Header */
+    .header{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand .mark{width:12px; height:12px; border-radius:2px; background:var(--accent); box-shadow:0 0 0 4px rgba(0,122,204,.12)}
+
+    /* Layout */
+    .layout{display:grid; grid-template-columns:1.05fr .95fr; gap:14px}
+    @media (max-width:980px){.layout{grid-template-columns:1fr}}
+
+    /* Card */
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-soft)}
+    .card-pad{padding:18px}
+    .card h2{margin:0 0 14px; font-size:20px}
+
+    /* Inputs */
+    label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
+    input[type="text"], input[type="number"]{width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:var(--panel-2); color:var(--text); font-weight:700; outline:none}
+    input[type="text"]:focus, input[type="number"]:focus{border-color:transparent; box-shadow:0 0 0 4px var(--ring)}
+    input[type="checkbox"]{accent-color:var(--accent); transform:scale(1.05)}
+    .muted{color:var(--muted)}
+
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width:640px){.grid-2{grid-template-columns:1fr}}
+
+    .row{display:flex; align-items:center; gap:10px}
+
+    .disabled{opacity:.45; pointer-events:none}
+
+    /* Button */
+    .actions{display:flex; justify-content:center; margin-top:16px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border:1px solid var(--border); background:linear-gradient(0deg,rgba(255,255,255,.02),rgba(255,255,255,0)); color:var(--text); border-radius:12px; font-weight:800; cursor:pointer}
+    .btn:hover{background:rgba(0,122,204,.12)}
+
+    /* Result blocks */
+    .result{display:flex; flex-direction:column; gap:16px}
+    .title-center{font-size:18px; font-weight:800; text-align:center; color:#e6e6e6}
+
+    .summary{display:flex; gap:14px}
+    @media (max-width:640px){.summary{flex-direction:column}}
+    .summary > .box{flex:1; border:1px solid var(--border); border-radius:12px; padding:14px 16px; background:var(--panel-2)}
+    .s-label{font-size:12px; color:var(--muted)}
+    .s-value{font-size:22px; font-weight:800; margin-top:2px}
+    .bar{height:8px; background:#1b1b1b; border:1px solid var(--border); border-radius:999px; overflow:hidden; margin-top:10px}
+    .fill{height:100%; width:0%}
+    .fill-accent{background:linear-gradient(90deg,var(--accent),#3594d8)}
+    .fill-muted{background:linear-gradient(90deg,#9a9a9a,#bdbdbd)}
+
+    .section{border:1px solid var(--border); border-radius:12px; padding:16px; background:var(--panel)}
+    .section h3{margin:0 0 10px; font-size:14px; letter-spacing:.2px; color:#b9bfc6}
+
+    /* Desglose con atenuación cromática */
+    .line{display:flex; justify-content:space-between; padding:10px 12px; border-bottom:1px solid #212121; border-left:3px solid transparent; transition:border-color .2s ease}
+    .line:last-child{border-bottom:none}
+    .k{color:var(--muted)}
+    .v{font-weight:800}
+    .is-pos{border-left-color:var(--green)}
+    .is-neg{border-left-color:var(--red)}
+    .is-warn{border-left-color:var(--yellow)}
+    .tone-pos{color:var(--green)}
+    .tone-neg{color:var(--red)}
+    .tone-warn{color:var(--yellow)}
+
+    .metrics{display:flex; gap:12px; flex-wrap:wrap}
+    .metric{flex:1; min-width:160px; border:1px solid var(--border); border-radius:12px; padding:14px 16px; background:var(--panel-2)}
+    .m-label{font-size:12px; color:var(--muted)}
+    .m-value{font-size:20px; font-weight:800}
+    .m-desc{font-size:12px; color:#7a7f87}
+
+    /* Notice + states */
+    .notice{padding:14px 16px; border:1px dashed var(--border); border-radius:12px; background:var(--panel-2); font-weight:800}
+    .state-good{color:var(--green)}
+    .state-warn{color:var(--yellow)}
+    .state-bad{color:var(--red)}
+  </style>
 </head>
 <body>
-  <main class="layout">
-    <!-- Panel: Formulario -->
-    <section class="formulario-panel">
-      <h1 class="titulo">Calculadora de Rentabilidad</h1>
-      <form id="formulario" class="formulario">
-        <div class="campo">
-          <label for="nombre">Nombre del producto</label>
-          <input type="text" id="nombre" value="Audífonos inalámbricos" required />
-        </div>
+  <div class="wrap">
+    <header class="header">
+      <div class="brand"><span class="mark"></span><span>Calculadora de Rentabilidad</span></div>
+      <!-- Subtitle removed by request -->
+    </header>
 
-        <div class="campos-dobles">
-          <div class="campo">
-            <label for="precio">Precio de venta ($)</label>
-            <input type="number" id="precio" value="199" required />
-          </div>
-          <div class="campo">
-            <label for="proveedor">Costo proveedor ($)</label>
-            <input type="number" id="proveedor" value="59" required />
-          </div>
-          <div class="campo">
-            <label for="tiktok">Comisión TikTok (%)</label>
-            <input type="number" id="tiktok" value="6" required />
-          </div>
-          <div class="campo">
-            <label for="afiliado">Comisión Afiliado (%)</label>
-            <input type="number" id="afiliado" value="10" required />
-          </div>
-          <div class="campo">
-            <label for="envio">Costo de envío ($)</label>
-            <input type="number" id="envio" value="59" required />
-          </div>
-          <div class="campo">
-            <label for="embalaje">Embalaje ($)</label>
-            <input type="number" id="embalaje" value="10" required />
-          </div>
-        </div>
+    <main class="layout">
+      <!-- Form Panel -->
+      <section class="card">
+        <div class="card-pad">
+          <h2>Datos del producto</h2>
+          <form id="formulario" class="form">
+            <div class="row" style="margin-bottom:12px">
+              <div style="flex:1">
+                <label for="nombre">Nombre del producto</label>
+                <input type="text" id="nombre" value="Audífonos inalámbricos" required />
+              </div>
+            </div>
 
-        <div class="campo-check">
-          <input type="checkbox" id="incluirAlmacenaje" />
-          <label for="incluirAlmacenaje">¿Incluir almacenaje en Shipster?</label>
-        </div>
+            <div class="grid-2">
+              <div>
+                <label for="precio">Precio de venta (MXN)</label>
+                <input type="number" id="precio" value="199" required />
+              </div>
+              <div>
+                <label for="proveedor">Costo proveedor (MXN)</label>
+                <input type="number" id="proveedor" value="59" required />
+              </div>
+              <div>
+                <label for="tiktok">Comisión TikTok (%)</label>
+                <input type="number" id="tiktok" value="6" required />
+              </div>
+              <div>
+                <label for="afiliado">Comisión Afiliado (%)</label>
+                <input type="number" id="afiliado" value="10" required />
+              </div>
+              <div>
+                <label for="envio">Costo de envío (MXN)</label>
+                <input type="number" id="envio" value="59" required />
+              </div>
+              <div>
+                <label for="embalaje">Embalaje (MXN)</label>
+                <input type="number" id="embalaje" value="10" required />
+              </div>
+            </div>
 
-        <div id="grupo-almacenaje" class="campo">
-          <label for="almacenaje">Almacenaje ($)</label>
-          <input type="number" id="almacenaje" value="10" />
-        </div>
-      </form>
-      <div class="resultado-exportar">
-        <button id="btnExportar" class="boton-exportar">Exportar resultados</button>
-      </div>
-    </section>
+            <div class="row" style="margin-top:10px">
+              <input type="checkbox" id="incluirAlmacenaje" />
+              <label for="incluirAlmacenaje" class="muted">¿Incluir almacenaje en Shipster?</label>
+            </div>
 
-    <!-- Panel: Resultados -->
-    <section id="resultado" class="resultado-panel" style="display: none;">
-      <div class="resultado-titulo" id="tituloProductoVisual"></div>
-      <!-- Resumen -->
-      <div class="resultado-resumen">
-        <div class="bloque-resumen">
-          <div class="resumen-label">Ganancia Neta</div>
-          <div class="resumen-valor" id="gananciaNetaResumen">$0.00</div>
-          <div class="resumen-barra">
-            <div class="barra" id="barraGanancia"></div>
+            <div style="margin-top:10px">
+              <label for="almacenaje">Almacenaje (MXN)</label>
+              <input type="number" id="almacenaje" value="10" />
+            </div>
+          </form>
+
+          <div class="actions">
+            <button id="btnExportar" class="btn">⬇ Exportar resultados</button>
           </div>
         </div>
-        <div class="bloque-resumen">
-          <div class="resumen-label">Margen de Ganancia</div>
-          <div class="resumen-valor" id="margenResumen">0.00%</div>
-          <div class="resumen-barra">
-            <div class="barra" id="barraMargen"></div>
+      </section>
+
+      <!-- Results Panel -->
+      <section id="resultado" class="card" style="display:none">
+        <div class="card-pad result">
+          <div id="tituloProductoVisual" class="title-center"></div>
+
+          <div class="summary">
+            <div class="box">
+              <div class="s-label">Ganancia neta</div>
+              <div class="s-value" id="gananciaNetaResumen">$0.00</div>
+              <div class="bar"><div id="barraGanancia" class="fill fill-accent"></div></div>
+            </div>
+            <div class="box">
+              <div class="s-label">Margen de ganancia</div>
+              <div class="s-value" id="margenResumen">0.00%</div>
+              <div class="bar"><div id="barraMargen" class="fill fill-muted"></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Desglose detallado</h3>
+            <div class="line is-pos" id="linePrecio"><span class="k">Precio de venta</span><span id="precioVenta" class="v tone-pos"></span></div>
+            <div class="line is-neg" id="lineProveedor"><span class="k">Costo del proveedor</span><span id="costoProveedor" class="v tone-neg"></span></div>
+            <div class="line is-neg" id="lineTikTok"><span class="k">Comisión TikTok</span><span id="comisionTikTok" class="v tone-neg"></span></div>
+            <div class="line is-neg" id="lineAfiliado"><span class="k">Comisión Afiliado</span><span id="comisionAfiliado" class="v tone-neg"></span></div>
+            <div class="line is-neg" id="lineEnvio"><span class="k">Costo de envío</span><span id="costoEnvio" class="v tone-neg"></span></div>
+            <div class="line is-neg" id="lineEmbalaje"><span class="k">Embalaje</span><span id="costoEmbalaje" class="v tone-neg"></span></div>
+            <div class="line is-neg" id="lineAlmacenaje"><span class="k">Almacenaje Shipster</span><span id="costoAlmacenaje" class="v tone-neg"></span></div>
+            <div class="line is-warn" id="lineTotal"><span class="k">Total gastos</span><span id="totalGastos" class="v tone-warn"></span></div>
+          </div>
+
+          <div class="section">
+            <h3>Métricas clave</h3>
+            <div class="metrics">
+              <div class="metric">
+                <div class="m-label">ROI</div>
+                <div class="m-value" id="roi">0%</div>
+                <div class="m-desc">Retorno de inversión</div>
+              </div>
+              <div class="metric">
+                <div class="m-label">Punto de equilibrio</div>
+                <div class="m-value" id="equilibrio">0</div>
+                <div class="m-desc">Unidades para cubrir costos</div>
+              </div>
+              <div class="metric">
+                <div class="m-label">Ganancia por unidad</div>
+                <div class="m-value" id="gananciaUnidad">$0.00</div>
+                <div class="m-desc">Beneficio por producto</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section notice">
+            <div id="textoConclusion">Sin datos suficientes para evaluar.</div>
           </div>
         </div>
-      </div>
+      </section>
+    </main>
+  </div>
 
-      <!-- Desglose -->
-      <div class="resultado-seccion">
-        <h3>Desglose Detallado</h3>
-        <div class="resultado-linea"><span>Precio de Venta</span><span id="precioVenta"></span></div>
-        <div class="resultado-linea"><span>Costo del Proveedor</span><span id="costoProveedor"></span></div>
-        <div class="resultado-linea"><span>Comisión de TikTok</span><span id="comisionTikTok"></span></div>
-        <div class="resultado-linea"><span>Comisión de Afiliado</span><span id="comisionAfiliado"></span></div>
-        <div class="resultado-linea"><span>Costo de Envío</span><span id="costoEnvio"></span></div>
-        <div class="resultado-linea"><span>Embalaje</span><span id="costoEmbalaje"></span></div>
-        <div class="resultado-linea"><span>Almacenaje Shipster</span><span id="costoAlmacenaje"></span></div>
-        <div class="resultado-linea total-linea"><span>Total Gastos</span><span id="totalGastos"></span></div>
-      </div>
-
-      <!-- Métricas -->
-      <div class="resultado-seccion resultado-metricas">
-        <h3>Métricas Clave</h3>
-        <div class="metricas-grid">
-          <div class="bloque-metrica">
-            <div class="metrica-label">ROI</div>
-            <div class="metrica-valor" id="roi"></div>
-            <div class="metrica-desc">Retorno de Inversión</div>
-          </div>
-          <div class="bloque-metrica">
-            <div class="metrica-label">Punto de Equilibrio</div>
-            <div class="metrica-valor" id="equilibrio"></div>
-            <div class="metrica-desc">Unidades para cubrir costos</div>
-          </div>
-          <div class="bloque-metrica">
-            <div class="metrica-label">Ganancia por Unidad</div>
-            <div class="metrica-valor" id="gananciaUnidad"></div>
-            <div class="metrica-desc">Beneficio por producto</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Conclusión -->
-      <div class="resultado-seccion conclusion" id="bloque-conclusion">
-        <h3>Resultado</h3>
-        <div class="conclusion-texto" id="textoConclusion"></div>
-      </div>
-    </section>
-  </main>
-
+  <!-- html2canvas CDN for export -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="script.js"></script>
+
+  <script>
+    (function(){
+      const $ = (q,ctx=document)=>ctx.querySelector(q);
+      const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
+      const fmt = new Intl.NumberFormat('es-MX',{style:'currency', currency:'MXN', maximumFractionDigits:2});
+
+      function getNumber(id){ return parseFloat($(id).value) || 0; }
+
+      function setClasses(lineId, valueId, tone){
+        const line = document.getElementById(lineId);
+        const val  = document.getElementById(valueId);
+        line.classList.remove('is-pos','is-neg','is-warn');
+        val.classList.remove('tone-pos','tone-neg','tone-warn');
+        if(tone==='pos'){ line.classList.add('is-pos'); val.classList.add('tone-pos'); }
+        else if(tone==='neg'){ line.classList.add('is-neg'); val.classList.add('tone-neg'); }
+        else if(tone==='warn'){ line.classList.add('is-warn'); val.classList.add('tone-warn'); }
+      }
+
+      function calcular(){
+        try{
+          const nombre = $('#nombre').value.trim();
+          const precio = getNumber('#precio');
+          const proveedor = getNumber('#proveedor');
+          const tiktok_pct = getNumber('#tiktok');
+          const afiliado_pct = getNumber('#afiliado');
+          const envio = getNumber('#envio');
+          const embalaje = getNumber('#embalaje');
+
+          const incluirAlm = $('#incluirAlmacenaje').checked;
+          const almInput = $('#almacenaje');
+          almInput.classList.toggle('disabled', !incluirAlm);
+          almInput.disabled = !incluirAlm;
+          const almacenaje = incluirAlm ? getNumber('#almacenaje') : 0;
+
+          const com_tiktok = precio * (tiktok_pct / 100);
+          const com_afiliado = precio * (afiliado_pct / 100);
+          const total_gastos = proveedor + com_tiktok + com_afiliado + envio + embalaje + almacenaje;
+          const ganancia = precio - total_gastos;
+          const margen = precio ? (ganancia / precio) * 100 : 0;
+          const costo_inversion = proveedor + envio + embalaje + almacenaje;
+          const roi = costo_inversion ? (ganancia / costo_inversion) * 100 : 0;
+          const equilibrio = precio ? (total_gastos / precio) : 0;
+
+          // Mostrar panel resultados
+          const panel = $('#resultado');
+          panel.style.display = 'block';
+          $('#tituloProductoVisual').textContent = nombre || 'Producto';
+
+          // Resumen
+          $('#gananciaNetaResumen').textContent = fmt.format(ganancia);
+          $('#margenResumen').textContent = `${margen.toFixed(2)}%`;
+          $('#barraGanancia').style.width = `${Math.max(0, Math.min(100, (ganancia/Math.max(1, precio))*100))}%`;
+          $('#barraMargen').style.width = `${Math.max(0, Math.min(100, margen))}%`;
+
+          // Desglose con atenuación
+          $('#precioVenta').textContent = `+${fmt.format(precio)}`;
+          $('#costoProveedor').textContent = `-${fmt.format(proveedor)}`;
+          $('#comisionTikTok').textContent = `-${fmt.format(com_tiktok)}`;
+          $('#comisionAfiliado').textContent = `-${fmt.format(com_afiliado)}`;
+          $('#costoEnvio').textContent = `-${fmt.format(envio)}`;
+          $('#costoEmbalaje').textContent = `-${fmt.format(embalaje)}`;
+          $('#costoAlmacenaje').textContent = `-${fmt.format(almacenaje)}`;
+          $('#totalGastos').textContent = `-${fmt.format(total_gastos)}`;
+
+          setClasses('linePrecio','precioVenta','pos');
+          setClasses('lineProveedor','costoProveedor','neg');
+          setClasses('lineTikTok','comisionTikTok','neg');
+          setClasses('lineAfiliado','comisionAfiliado','neg');
+          setClasses('lineEnvio','costoEnvio','neg');
+          setClasses('lineEmbalaje','costoEmbalaje','neg');
+          setClasses('lineAlmacenaje','costoAlmacenaje', almacenaje>0 ? 'neg' : 'warn');
+          setClasses('lineTotal','totalGastos','warn');
+
+          // Métricas
+          $('#roi').textContent = `${roi.toFixed(2)}%`;
+          $('#equilibrio').textContent = `${equilibrio.toFixed(2)} unidades`;
+          $('#gananciaUnidad').textContent = fmt.format(ganancia);
+
+          // Conclusión con simbología
+          let conclusion = 'Margen insuficiente.'; let state='state-bad';
+          if(margen > 25){ conclusion = 'Buen margen.'; state='state-good'; }
+          else if(margen >= 15){ conclusion = 'Margen regular.'; state='state-warn'; }
+          const t = $('#textoConclusion');
+          t.classList.remove('state-good','state-warn','state-bad');
+          t.classList.add(state);
+          t.textContent = conclusion;
+        }catch(err){
+          alert('Error en los datos ingresados. Verifica los campos numéricos.\n'+err.message);
+        }
+      }
+
+      // Bind inputs
+      $$('input').forEach(i=>{ i.addEventListener('input', calcular); i.addEventListener('change', calcular); });
+      // Initial calc
+      calcular();
+
+      // Export
+      $('#btnExportar').addEventListener('click', ()=>{
+        const resultado = document.getElementById('resultado');
+        const nombre = ($('#nombre').value||'Producto').trim().replace(/\s+/g,'_');
+        const fecha = new Date().toISOString().slice(0,10);
+        html2canvas(resultado,{ backgroundColor:null, useCORS:true, scale:2 }).then(canvas=>{
+          const a=document.createElement('a');
+          a.download = `Rentabilidad_${nombre}_${fecha}.png`;
+          a.href = canvas.toDataURL('image/png');
+          a.click();
+        }).catch(err=>alert('Ocurrió un error al exportar. Intenta de nuevo.\n'+err.message));
+      });
+    })();
+  </script>
 </body>
 </html>
